@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Browser profile and auth state
+data/
+
+# Secrets
+.env
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
