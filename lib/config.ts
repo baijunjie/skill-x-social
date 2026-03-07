@@ -42,6 +42,7 @@ export const config = {
       '--no-first-run',
       '--no-default-browser-check',
       '--disable-sync',
+      '--password-store=basic', // Don't use Keychain - allows cookies to persist without encryption
     ],
     ignoreDefaultArgs: ['--enable-automation'],
   },
