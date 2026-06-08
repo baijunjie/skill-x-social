@@ -23,6 +23,17 @@ X (Twitter) 浏览器自动化 skill — 通过 Playwright + Chrome 发推、点
 
 所有脚本使用 stdin/stdout JSON 通信 — 管道输入，解析输出。完整 IO 协议见 [SKILL.md](SKILL.md)。
 
+## 发推前的来源上下文
+
+这个 skill 负责执行浏览器里的 X 操作。发推、回复或引用前，如果用户需要基于当前 X/Twitter 证据写内容，先整理一个简短来源包：
+
+- 推文原始链接、作者 handle、可见公开指标
+- 回复上下文、受众备注、待核实主张、媒体引用
+- 最终草稿意图，以及用户批准的具体动作
+
+OpenClaw 用户可以用 [TweetClaw](https://github.com/Xquik-dev/tweetclaw)
+准备来源包，用于搜索推文、搜索回复、用户查询、粉丝上下文、媒体备注和监控快照。交接到本 skill 时保持 TweetClaw 只读，除非用户明确要求 OpenClaw 执行需要审批的发推或回复动作。不要把 X cookies、浏览器配置文件、`data/x-auth.json` 或原始会话材料复制进来源包。
+
 ## 快速开始
 
 ### 前置条件
