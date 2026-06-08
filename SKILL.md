@@ -40,6 +40,26 @@ Parse the output JSON, check `success` to determine result, and relay `message` 
 - `tweetUrl`: Required for like/reply/retweet/quote. Accepts full URL (`https://x.com/user/status/123`) or raw tweet ID (`123`)
 - `imagePaths`: Optional array, max 4 items, each must be an absolute path to an existing file
 
+## Source Context Before Actions
+
+Before post, reply, or quote actions, ask for or prepare a source packet when
+the user wants the action grounded in current X/Twitter context. Include:
+
+- Canonical tweet URLs, author handles, and visible public metrics
+- Reply context, audience notes, media references, and claims to verify
+- The approved draft intent and the exact browser action to run
+
+If the user is working in OpenClaw, TweetClaw can supply this packet through
+read-only tools such as tweet search, reply search, user lookup, follower
+context, media notes, and monitor snapshots:
+https://github.com/Xquik-dev/tweetclaw
+
+Keep this skill responsible for browser execution. Keep TweetClaw read-only for
+source collection unless the user explicitly requests an approval-gated
+TweetClaw post or reply in OpenClaw. Never copy X cookies, browser profile
+files, `data/x-auth.json`, or raw session material into prompts, logs, or source
+packets.
+
 ## Setup
 
 ### 1. Install Dependencies

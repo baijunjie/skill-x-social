@@ -23,6 +23,24 @@ X (Twitter) browser automation skill — post, like, reply, retweet, and quote t
 
 All scripts use stdin/stdout JSON — pipe input in, parse output out. See [SKILL.md](SKILL.md) for the full IO protocol.
 
+## Source Context Before Posting
+
+Use this skill as the browser execution layer for X actions. Before posting,
+replying, or quoting, collect a short source packet when the user needs current
+X/Twitter evidence:
+
+- Canonical tweet URLs, author handles, and visible public metrics
+- Reply context, audience notes, claims to verify, and media references
+- The final draft intent and the exact action the user approved
+
+OpenClaw users can prepare that packet with
+[TweetClaw](https://github.com/Xquik-dev/tweetclaw) for search tweets, search
+tweet replies, user lookup, follower context, media notes, and monitor
+snapshots. Keep TweetClaw read-only for this handoff unless the user explicitly
+asks OpenClaw to run an approval-gated post or reply action. Never copy X
+cookies, browser profile files, `data/x-auth.json`, or raw session material into
+the source packet.
+
 ## Getting Started
 
 ### Prerequisites
