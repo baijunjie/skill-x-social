@@ -6,6 +6,7 @@
 
 import { getBrowserContext, navigateTo } from '../lib/browser.js';
 import { runScript, ScriptResult } from '../lib/script.js';
+import { postWithXquik, shouldUseXquik } from '../lib/xquik.js';
 import {
   checkLoginStatus,
   isButtonDisabled,
@@ -33,6 +34,10 @@ async function postTweet(input: PostInput): Promise<ScriptResult> {
 
   const imageError = validateImagePaths(imagePaths);
   if (imageError) return imageError;
+
+  if (shouldUseXquik(imagePaths)) {
+    return postWithXquik({ content, successLabel: 'Tweet' });
+  }
 
   let context = null;
   try {

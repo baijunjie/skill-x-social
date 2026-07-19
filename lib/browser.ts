@@ -6,6 +6,7 @@ import { chromium, BrowserContext, Page } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 import { config } from './config.js';
+import { resolveTweetUrl } from './tweet.js';
 
 // Track current context for cleanup on termination
 let currentContext: BrowserContext | null = null;
@@ -64,16 +65,6 @@ export async function navigateTo(page: Page, url: string): Promise<void> {
 }
 
 /**
- * Extract tweet ID from URL or raw ID string
- */
-function extractTweetId(input: string): string | null {
-  const urlMatch = input.match(/(?:x\.com|twitter\.com)\/\w+\/status\/(\d+)/);
-  if (urlMatch) return urlMatch[1];
-  if (/^\d+$/.test(input.trim())) return input.trim();
-  return null;
-}
-
-/**
  * Navigate to a tweet page and verify it exists
  */
 export async function navigateToTweet(
@@ -82,10 +73,13 @@ export async function navigateToTweet(
 ): Promise<{ page: Page; success: boolean; error?: string }> {
   const page = context.pages()[0] || await context.newPage();
 
-  let url = tweetUrl;
-  const tweetId = extractTweetId(tweetUrl);
-  if (tweetId && !tweetUrl.startsWith('http')) {
-    url = `https://x.com/i/status/${tweetId}`;
+  const url = resolveTweetUrl(tweetUrl);
+  if (!url) {
+    return {
+      page,
+      success: false,
+      error: 'Provide an x.com or twitter.com tweet URL, or a numeric tweet ID.'
+    };
   }
 
   try {

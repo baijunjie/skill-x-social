@@ -104,8 +104,15 @@ Output is a JSON line:
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `CHROME_PATH` | `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome` | Chrome executable path |
+| `XQUIK_API_KEY` | - | Xquik API key for text-only posts and replies |
+| `XQUIK_ACCOUNT` | - | X account username or account ID used by Xquik |
+| `XQUIK_BASE_URL` | `https://xquik.com` | Optional Xquik API base URL override |
 
 Set in `.env` at the project root.
+
+Set both `XQUIK_API_KEY` and `XQUIK_ACCOUNT` to use Xquik for text-only posts
+and replies. Media actions keep using the existing browser workflow. If neither
+variable is set, all actions keep using browser automation.
 
 ### Timeouts and Limits
 
