@@ -6,6 +6,8 @@
 
 import { getBrowserContext, navigateToTweet, navigateTo } from '../lib/browser.js';
 import { runScript, ScriptResult } from '../lib/script.js';
+import { extractTweetId, resolveTweetUrl } from '../lib/tweet.js';
+import { postWithXquik, shouldUseXquik } from '../lib/xquik.js';
 import {
   validateTweetUrl,
   validateContent,
@@ -38,6 +40,23 @@ async function replyToTweet(input: ReplyInput): Promise<ScriptResult> {
   const imageError = validateImagePaths(imagePaths);
   if (imageError) return imageError;
 
+  const resolvedTweetUrl = resolveTweetUrl(tweetUrl);
+  if (!resolvedTweetUrl) {
+    return {
+      success: false,
+      message: 'Provide an x.com or twitter.com tweet URL, or a numeric tweet ID.'
+    };
+  }
+
+  if (shouldUseXquik(imagePaths)) {
+    const replyToTweetId = extractTweetId(tweetUrl);
+    return postWithXquik({
+      content,
+      replyToTweetId,
+      successLabel: 'Reply'
+    });
+  }
+
   let context = null;
   try {
     context = await getBrowserContext();
@@ -54,7 +73,7 @@ async function replyToTweet(input: ReplyInput): Promise<ScriptResult> {
     }
 
     // Navigate back to tweet page
-    await navigateTo(page, tweetUrl);
+    await navigateTo(page, resolvedTweetUrl);
 
     // Click reply button
     const tweet = getFirstTweet(page);

@@ -95,5 +95,11 @@ echo '{"tweetUrl":"https://x.com/user/status/123","comment":"Interesting"}' | np
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `CHROME_PATH` | `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome` | Chrome executable path (set in `.env` at project root) |
+| `XQUIK_API_KEY` | - | Xquik API key for text-only posts and replies |
+| `XQUIK_ACCOUNT` | - | X account username or account ID used by Xquik |
+| `XQUIK_BASE_URL` | `https://xquik.com` | Optional Xquik API base URL override |
+
+Set both Xquik variables to use the optional text backend. Media actions and
+all actions without Xquik configuration continue through the browser workflow.
 
 Edit `lib/config.ts` in the skill directory to adjust browser timeouts, viewport size, and tweet character limits.

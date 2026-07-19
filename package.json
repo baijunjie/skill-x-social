@@ -4,6 +4,7 @@
   "description": "X (Twitter) browser automation skill — post, like, reply, retweet, and quote tweets via Playwright",
   "type": "module",
   "scripts": {
+    "test": "node --import tsx --test tests/**/*.test.ts",
     "typecheck": "tsc --noEmit",
     "test:post": "echo '{\"content\":\"Test tweet\"}' | npx tsx scripts/post.ts",
     "setup": "npx tsx scripts/setup.ts"

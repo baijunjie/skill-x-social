@@ -6,6 +6,7 @@
 
 import { getBrowserContext, navigateToTweet, navigateTo } from '../lib/browser.js';
 import { runScript, ScriptResult } from '../lib/script.js';
+import { resolveTweetUrl } from '../lib/tweet.js';
 import {
   validateTweetUrl,
   validateContent,
@@ -38,6 +39,14 @@ async function quoteTweet(input: QuoteInput): Promise<ScriptResult> {
   const imageError = validateImagePaths(imagePaths);
   if (imageError) return imageError;
 
+  const resolvedTweetUrl = resolveTweetUrl(tweetUrl);
+  if (!resolvedTweetUrl) {
+    return {
+      success: false,
+      message: 'Provide an x.com or twitter.com tweet URL, or a numeric tweet ID.'
+    };
+  }
+
   let context = null;
   try {
     context = await getBrowserContext();
@@ -54,7 +63,7 @@ async function quoteTweet(input: QuoteInput): Promise<ScriptResult> {
     }
 
     // Navigate back to tweet page
-    await navigateTo(page, tweetUrl);
+    await navigateTo(page, resolvedTweetUrl);
 
     // Click retweet button to open menu
     const tweet = getFirstTweet(page);
